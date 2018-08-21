@@ -1,3 +1,4 @@
+import platform
 from setuptools import setup, Extension
 from Cython.Distutils import build_ext
 import numpy as np
@@ -16,10 +17,22 @@ LICENSE = "Apache 2.0"
 SRC_DIR = "cython_example_proj"
 PACKAGES = [SRC_DIR]
 
+IS_WINDOWS = (platform.system() == 'Windows')
+IS_LINUX = (platform.system() == 'Linux')
+
+if IS_WINDOWS:
+    extra_link_args = ['/DEBUG:FULL']
+    extra_compile_args = ['/Zi', '/Od']
+else:
+    extra_link_args = []
+    extra_compile_args = ['-g']
+
 ext_1 = Extension(SRC_DIR + ".wrapped",
                   [SRC_DIR + "/lib/cfunc.c", SRC_DIR + "/wrapped.pyx"],
                   libraries=[],
-                  include_dirs=[np.get_include()])
+                  include_dirs=[np.get_include()],
+                  extra_compile_args=extra_compile_args,
+                  extra_link_args=extra_link_args)
 
 
 EXTENSIONS = [ext_1]
