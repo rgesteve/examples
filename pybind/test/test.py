@@ -2,6 +2,7 @@ import sys, os, json
 
 import montecarlopi
 
+print("Starting to calculate estimate...")
 if __name__ == '__main__':
     reps = int(1e8)
     estimate = montecarlopi.pi(reps)
